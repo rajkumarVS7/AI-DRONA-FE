@@ -1,0 +1,69 @@
+<!-- Chat Pane Top Title Banner Header -->
+<div class="p-4 border-b border-slate-200 bg-slate-50">
+  <h3 class="text-sm font-bold text-slate-700 flex items-center">💬 Contextual AI Assistant</h3>
+  <p class="text-xs text-slate-400 mt-0.5">Ask questions specific to your loaded knowledge workspace assets</p>
+  <div *ngIf="activeContextTitle" class="mt-2 text-[10px] bg-indigo-50 border border-indigo-200 text-indigo-700 px-2 py-0.5 rounded font-medium truncate">
+    🌐 Context: {{ activeContextTitle }}
+  </div>
+</div>
+
+<!-- Active Message Stream Component Viewport Canvas Thread -->
+<div class="flex-1 p-4 overflow-y-auto space-y-4 max-h-[60vh]">
+  
+  <div *ngFor="let msg of chatHistory" class="flex items-start space-x-2.5 max-w-[85%]" 
+       [ngClass]="{'ml-auto flex-row-reverse space-x-reverse': msg.sender === 'ME'}">
+    
+    <!-- Profile Tag Element Badge -->
+    <div class="text-xs font-bold rounded-lg p-2 shrink-0 select-none"
+         [ngClass]="{
+           'bg-indigo-100 text-indigo-700': msg.sender === 'AI',
+           'bg-slate-800 text-white': msg.sender === 'ME'
+         }">
+      {{ msg.sender }}
+    </div>
+
+    <!-- Message Bubble Dynamic Container -->
+    <div class="text-sm p-3 rounded-2xl leading-relaxed whitespace-pre-wrap"
+         [ngClass]="{
+           'bg-slate-100 text-slate-800 rounded-tl-none': msg.sender === 'AI',
+           'bg-indigo-600 text-white rounded-tr-none': msg.sender === 'ME'
+         }">
+      {{ msg.text }}
+    </div>
+  </div>
+
+  <!-- Simulated AI Thinking Stream Loader Indicator -->
+  <div *ngIf="isThinking" class="flex items-start space-x-2.5 max-w-[85%]">
+    <div class="bg-indigo-100 text-indigo-700 text-xs font-bold rounded-lg p-2 shrink-0 animate-pulse">AI</div>
+    <div class="bg-slate-100 text-slate-500 text-sm p-3 rounded-2xl rounded-tl-none italic flex items-center">
+      <span class="mr-2">🤔 Agent analyzing context logs...</span>
+    </div>
+  </div>
+</div>
+
+<!-- Chat Input Box Container Footer Context Area -->
+<div class="p-4 border-t border-slate-200 mt-auto bg-white">
+  
+  <!-- Interactive Floating Fast Query Option Chips (Disabled while loading) -->
+  <div class="flex space-x-2 mb-3 overflow-x-auto pb-1 text-xs">
+    <button (click)="sendMessage('Summarize the operational constraints and risks.')" [disabled]="isThinking"
+            class="bg-slate-100 text-slate-600 border border-slate-200 px-3 py-1 rounded-full whitespace-nowrap hover:bg-slate-200 disabled:opacity-50">
+      📋 Summarize Risks
+    </button>
+    <button (click)="sendMessage('Draft a brief update email based on these notes.')" [disabled]="isThinking"
+            class="bg-slate-100 text-slate-600 border border-slate-200 px-3 py-1 rounded-full whitespace-nowrap hover:bg-slate-200 disabled:opacity-50">
+      ✉️ Draft Email Summary
+    </button>
+  </div>
+  
+  <!-- Main Input Submission Text Area Field Row -->
+  <div class="flex space-x-2">
+    <input type="text" [(ngModel)]="userQuery" (keyup.enter)="sendMessage()" [disabled]="isThinking"
+           placeholder="Ask your agent anything..." 
+           class="w-full text-sm px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500 disabled:bg-slate-50" />
+    <button (click)="sendMessage()" [disabled]="isThinking"
+            class="bg-slate-900 text-white font-medium text-sm px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors disabled:bg-slate-400">
+      Send
+    </button>
+  </div>
+</div>

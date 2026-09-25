@@ -1,0 +1,83 @@
+<div class="flex items-center justify-between mb-6">
+  <h2 class="text-xl font-bold text-slate-800">📝 Generated Insights & Workspace Notes</h2>
+</div>
+
+<!-- Placeholder view if no files are loaded yet -->
+<div *ngIf="!activeNoteData" class="flex flex-col items-center justify-center h-64 border border-dashed border-slate-200 rounded-2xl bg-white p-6 text-center text-slate-400">
+  <span class="text-4xl mb-2">👁️‍🗨️</span>
+  <p class="text-sm font-medium">No active summary generated yet.</p>
+  <p class="text-xs mt-1">Upload a document file to activate the AI Agent extraction pipeline.</p>
+</div>
+
+<!-- Active Document Node Frame -->
+<div *ngIf="activeNoteData" class="space-y-6 animate-fade-in">
+  
+  <!-- Active Summary Title Meta Block -->
+  <div class="bg-slate-900 text-white p-5 rounded-xl shadow-md border border-slate-800">
+    <span class="text-[10px] bg-indigo-600 px-2 py-0.5 rounded font-mono font-bold uppercase tracking-wider">Active Resource Context</span>
+    <h3 class="text-lg font-bold mt-1 text-indigo-300">📄 {{ activeNoteData.filename }}</h3>
+    <p class="text-xs text-slate-400 mt-2 font-mono bg-slate-950 p-2 rounded max-h-20 overflow-y-auto border border-slate-800">
+      {{ activeNoteData.raw_text_preview }}
+    </p>
+  </div>
+
+  <!-- 1. Executive Summary Card -->
+  <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm" *ngIf="activeNoteData.ai_insights.executive_summary">
+    <h4 class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-2 flex items-center">
+      <span class="mr-2">📌</span> Executive Summary
+    </h4>
+    <p class="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
+      {{ activeNoteData.ai_insights.executive_summary }}
+    </p>
+  </div>
+
+  <!-- 2. Key Takeaways Grid Array -->
+  <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm" *ngIf="activeNoteData.ai_insights.key_takeaways?.length">
+    <h4 class="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-3 flex items-center">
+      <span class="mr-2">⚡</span> Key Actionable Takeaways
+    </h4>
+    <ul class="space-y-2.5">
+      <li *ngFor="let point of activeNoteData.ai_insights.key_takeaways" class="text-sm text-slate-600 flex items-start">
+        <span class="text-emerald-500 mr-2 font-bold">✓</span>
+        <span>{{ point }}</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 3. Bottom Context Metadata Splits -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    
+    <!-- Decisions and Strategic Risks -->
+    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm" *ngIf="activeNoteData.ai_insights.decisions_and_risks?.length">
+      <h4 class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-3 flex items-center">
+        <span class="mr-2">⚠️</span> Decisions & Risks
+      </h4>
+      <ul class="space-y-2 text-xs text-slate-600 list-disc pl-4">
+        <li *ngFor="let risk of activeNoteData.ai_insights.decisions_and_risks">{{ risk }}</li>
+      </ul>
+    </div>
+
+    <!-- Critical Metrics, Timestamps, Dates and Numbers -->
+    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm" *ngIf="activeNoteData.ai_insights.dates_and_numbers?.length">
+      <h4 class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-3 flex items-center">
+        <span class="mr-2">📊</span> Metrics & Deadlines
+      </h4>
+      <ul class="space-y-2 text-xs text-slate-600 list-disc pl-4">
+        <li *ngFor="let item of activeNoteData.ai_insights.dates_and_numbers">{{ item }}</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- 4. Important Identified Entities -->
+  <div class="bg-slate-100 p-4 rounded-xl border border-slate-200" *ngIf="activeNoteData.ai_insights.important_entities?.length">
+    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">🏷️ Tracked Entities</h4>
+    <div class="flex flex-wrap gap-1.5">
+      <span *ngFor="let ent of activeNoteData.ai_insights.important_entities" 
+            class="bg-white border border-slate-300 text-slate-700 text-xs px-2.5 py-1 rounded-md font-medium shadow-sm">
+        {{ ent }}
+      </span>
+    </div>
+  </div>
+
+</div>

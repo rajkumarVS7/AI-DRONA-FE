@@ -1,0 +1,40 @@
+<h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">📥 Data Ingestion</h3>
+
+<!-- File Input Selector Card -->
+<label class="block border-2 border-dashed border-slate-300 hover:border-indigo-500 transition-colors rounded-xl p-6 text-center cursor-pointer bg-slate-50 mb-6">
+  <input type="file" (change)="onFileSelected($event)" class="hidden" accept=".pdf,.doc,.docx,.pptx" />
+  <div class="text-slate-400 text-3xl mb-2">📁</div>
+  <p class="text-sm font-medium text-slate-700">Click to upload Document file</p>
+  <p class="text-xs text-slate-400 mt-1">Accepts PDF, Word, or PPT</p>
+</label>
+
+<!-- URL Form Processing -->
+<div class="mb-6">
+  <label class="block text-xs font-bold text-slate-700 uppercase mb-2">Paste Video or Article URL</label>
+  <div class="flex space-x-2">
+    <input type="text" [(ngModel)]="inputUrl" placeholder="YouTube or Article link..." class="w-full text-sm px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500" />
+    <button (click)="onUrlSubmit()" [disabled]="isProcessing" class="bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-400 text-white font-medium text-sm px-4 py-2 rounded-lg transition-colors">
+      {{ isProcessing ? '...' : 'Analyze' }}
+    </button>
+  </div>
+</div>
+
+<hr class="border-slate-200 mb-6" />
+
+<!-- Status Monitoring Section -->
+<h4 class="text-xs font-bold text-slate-700 uppercase mb-3">📚 Loaded Knowledge Sources</h4>
+<div class="space-y-2">
+  <div *ngIf="isProcessing" class="p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-xs flex justify-between items-center text-amber-700">
+    <span class="animate-pulse">🔄 Extraction Agent processing active payload...</span>
+  </div>
+  
+  <div *ngIf="uploadedFileName && !isProcessing" class="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs">
+    <span class="truncate font-medium text-slate-700">📄 {{ uploadedFileName }}</span>
+    <span class="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">READY</span>
+  </div>
+</div>
+<!-- ... existing layout blocks ... -->
+<div *ngIf="errorMessage" class="mt-4 p-2.5 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg font-medium">
+  ⚠️ {{ errorMessage }}
+</div>
+
