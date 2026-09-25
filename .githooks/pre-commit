@@ -6,7 +6,9 @@ if [ "$branch" = "main" ]; then
   echo "Direct commits to 'main' are blocked."
   echo "Create a feature branch and commit there instead."
   if [ "${BYPASS_NO_DIRECT_COMMIT:-}" != "1" ]; then
-    echo "To override temporarily, run: BYPASS_NO_DIRECT_COMMIT=1 git commit ..."
+    echo "To override temporarily in PowerShell, run:"
+    echo '$env:BYPASS_NO_DIRECT_COMMIT = "1"; git commit -m "your message"'
+    echo "Or in Git Bash / Linux / macOS: BYPASS_NO_DIRECT_COMMIT=1 git commit -m \"your message\""
     exit 1
   fi
 fi
