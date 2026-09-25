@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
+
+if [ "$branch" = "main" ]; then
+  echo "Direct commits to 'main' are blocked."
+  echo "Create a feature branch and commit there instead."
+  if [ "${BYPASS_NO_DIRECT_COMMIT:-}" != "1" ]; then
+    echo "To override temporarily, run: BYPASS_NO_DIRECT_COMMIT=1 git commit ..."
+    exit 1
+  fi
+fi
+
+exit 0
